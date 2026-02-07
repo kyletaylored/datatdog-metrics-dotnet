@@ -19,8 +19,8 @@ Please be respectful and constructive in all interactions with the community.
 1. **Fork and clone the repository**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/node-datadog-metrics.git
-cd node-datadog-metrics/dotnet
+git clone https://github.com/YOUR_USERNAME/datadog-metrics-dotnet.git
+cd datadog-metrics-dotnet
 ```
 
 2. **Initialize the development environment**
@@ -90,6 +90,7 @@ git commit -m "Add feature: description of what you did"
 ```
 
 Follow these commit message guidelines:
+
 - Use the imperative mood ("Add feature" not "Added feature")
 - Keep the first line under 72 characters
 - Reference issues: "Fix #123: description"
@@ -210,18 +211,22 @@ dotnet/
 
 ```markdown
 ## Description
+
 Brief description of what this PR does.
 
 ## Type of Change
+
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 - [ ] Documentation update
 
 ## Testing
+
 Describe the tests you ran to verify your changes.
 
 ## Checklist
+
 - [ ] My code follows the style guidelines
 - [ ] I have performed a self-review
 - [ ] I have commented my code, particularly in hard-to-understand areas
@@ -263,6 +268,7 @@ Example:
 Metrics are not being flushed when FlushIntervalSeconds is set to 0.
 
 **Steps to reproduce**
+
 1. Configure with FlushIntervalSeconds = 0
 2. Record some metrics
 3. Observe that metrics are never sent
@@ -274,6 +280,7 @@ Metrics should be sent immediately when interval is 0.
 Metrics are never sent.
 
 **Environment**
+
 - .NET 8.0
 - Windows 11
 - Datadog.Metrics v1.0.0
@@ -306,7 +313,7 @@ make ci                # Run full CI pipeline locally
 
 If you have questions about contributing, feel free to:
 
-- Open a [GitHub Discussion](https://github.com/dbader/node-datadog-metrics/discussions)
+- Open a [GitHub Discussion](https://github.com/kyletaylored/datadog-metrics-dotnet/discussions)
 - Create an issue with the "question" label
 
 ## License

@@ -2,6 +2,11 @@
 
 A .NET library for buffered metrics reporting to Datadog HTTP API with System.Diagnostics.Metrics integration.
 
+> **Note:** This is a community-maintained .NET port of [node-datadog-metrics](https://github.com/dbader/node-datadog-metrics). Published as `kyletaylored.Datadog.Metrics` until official Datadog support.
+
+[![NuGet](https://img.shields.io/nuget/v/kyletaylored.Datadog.Metrics.svg)](https://www.nuget.org/packages/kyletaylored.Datadog.Metrics)
+[![Downloads](https://img.shields.io/nuget/dt/kyletaylored.Datadog.Metrics.svg)](https://www.nuget.org/packages/kyletaylored.Datadog.Metrics)
+
 ## Features
 
 - **Buffered metrics aggregation** - Metrics are buffered and flushed at regular intervals
@@ -18,8 +23,16 @@ A .NET library for buffered metrics reporting to Datadog HTTP API with System.Di
 ## Installation
 
 ```bash
-dotnet add package Datadog.Metrics
+dotnet add package kyletaylored.Datadog.Metrics
 ```
+
+Or via Package Manager Console:
+
+```powershell
+Install-Package kyletaylored.Datadog.Metrics
+```
+
+**Namespace remains `Datadog.Metrics`** - no code changes needed if/when an official package is released.
 
 ## Quick Start
 
@@ -73,6 +86,7 @@ counter.Add(1, new KeyValuePair<string, object?>("endpoint", "/api"));
 ## Metric Types
 
 ### Gauge
+
 Records a point-in-time value. Latest value wins.
 
 ```csharp
@@ -80,6 +94,7 @@ metrics.Gauge("temperature", 72.5, new[] { "location:office" });
 ```
 
 ### Counter
+
 Accumulates values over time.
 
 ```csharp
@@ -88,6 +103,7 @@ metrics.Increment("requests"); // Shorthand for Counter(..., 1)
 ```
 
 ### Histogram
+
 Client-side aggregation with configurable percentiles.
 
 ```csharp
@@ -103,6 +119,7 @@ metrics.Histogram("latency", 250, null, null, options);
 ```
 
 ### Distribution
+
 Server-side aggregation. Sends all raw values to Datadog.
 
 ```csharp
@@ -175,6 +192,7 @@ dotnet test
 ```
 
 Current test coverage includes:
+
 - Buffer key generation with tag sorting
 - Metric type behaviors (gauge, counter, histogram)
 - Default tags and prefixes
@@ -214,25 +232,14 @@ services.AddDatadogMetrics(options =>
 });
 ```
 
-## Differences from Node.js Version
-
-This .NET port maintains feature parity with the Node.js `node-datadog-metrics` package:
-
-- ✅ Same buffering and aggregation behavior
-- ✅ Same tag sorting algorithm for consistent buffer keys
-- ✅ Same flush interval and retry logic
-- ✅ Dual API endpoint support (v1 for distributions, v2 for series)
-- ➕ **Bonus**: Native System.Diagnostics.Metrics integration
-- ➕ **Bonus**: Built-in ASP.NET Core dependency injection
-
 ## Development
 
 ### Quick Start for Contributors
 
 ```bash
 # Clone the repository
-git clone https://github.com/dbader/node-datadog-metrics.git
-cd node-datadog-metrics/dotnet
+git clone https://github.com/kyletaylored/datadog-metrics-dotnet.git
+cd datadog-metrics-dotnet
 
 # Initialize development environment
 make init
@@ -266,7 +273,7 @@ make ci                # Run full CI pipeline locally
 ### Project Structure
 
 ```
-dotnet/
+datadog-metrics-dotnet/
 ├── .github/               # GitHub Actions workflows and issue templates
 ├── samples/               # Sample applications
 │   └── Datadog.Metrics.Sample/
@@ -322,7 +329,7 @@ The project uses GitHub Actions for continuous integration:
 
 ## Support
 
-- 📖 **Documentation**: [samples/Datadog.Metrics.Sample/README.md](samples/Datadog.Metrics.Sample/README.md)
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/dbader/node-datadog-metrics/issues)
-- 💡 **Feature Requests**: [GitHub Issues](https://github.com/dbader/node-datadog-metrics/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/dbader/node-datadog-metrics/discussions)
+- **Documentation**: [samples/Datadog.Metrics.Sample/README.md](samples/Datadog.Metrics.Sample/README.md)
+- **Bug Reports**: [GitHub Issues](https://github.com/kyletaylored/datadog-metrics-dotnet/issues)
+- **Feature Requests**: [GitHub Issues](https://github.com/kyletaylored/datadog-metrics-dotnet/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/kyletaylored/datadog-metrics-dotnet/discussions)

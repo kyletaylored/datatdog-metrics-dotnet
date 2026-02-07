@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentation
+    url: https://github.com/kyletaylored/datadog-metrics-dotnet/blob/main/README.md
+    about: Read the documentation for usage and configuration
+  - name: 💻 Sample Application
+    url: https://github.com/kyletaylored/datadog-metrics-dotnet/tree/main/samples/Datadog.Metrics.Sample
+    about: See the sample application for complete examples
+  - name: ⚙️ Configuration Guide
+    url: https://github.com/kyletaylored/datadog-metrics-dotnet/blob/main/samples/Datadog.Metrics.Sample/CONFIGURATION.md
+    about: Learn about configuration methods and best practices
+  - name: 🤝 Contributing Guide
+    url: https://github.com/kyletaylored/datadog-metrics-dotnet/blob/main/CONTRIBUTING.md
+    about: Learn how to contribute to the project

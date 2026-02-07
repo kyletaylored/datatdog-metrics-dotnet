@@ -8,14 +8,16 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
     <!-- Package metadata -->
-    <PackageId>Datadog.Metrics</PackageId>
-    <Version>1.0.0</Version>
-    <Authors>Datadog Community</Authors>
-    <Company>Datadog</Company>
-    <Description>Buffered metrics reporting to Datadog HTTP API with System.Diagnostics.Metrics integration</Description>
-    <PackageTags>datadog;metrics;monitoring;observability;telemetry</PackageTags>
+    <PackageId>kyletaylored.Datadog.Metrics</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Kyle Taylor</Authors>
+    <Description>Buffered metrics reporting to Datadog HTTP API with System.Diagnostics.Metrics integration.</Description>
+    <PackageTags>datadog;metrics;monitoring;observability;telemetry;community;unofficial</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/dbader/node-datadog-metrics</RepositoryUrl>
+    <RepositoryUrl>https://github.com/kyletaylored/datadog-metrics-dotnet</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/kyletaylored/datadog-metrics-dotnet/tree/main/dotnet</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,6 +36,11 @@
   <!-- Expose internals to test assembly -->
   <ItemGroup>
     <InternalsVisibleTo Include="Datadog.Metrics.Tests" />
+  </ItemGroup>
+
+  <!-- Include README in package -->
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
