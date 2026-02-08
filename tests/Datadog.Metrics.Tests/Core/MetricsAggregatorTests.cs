@@ -87,10 +87,12 @@ public class MetricsAggregatorTests
 
         // Assert
         Assert.Single(result);
-        Assert.Equal(3, result[0].Tags!.Length);
-        Assert.Contains("env:prod", result[0].Tags);
-        Assert.Contains("service:api", result[0].Tags);
-        Assert.Contains("custom:tag", result[0].Tags);
+        Assert.NotNull(result[0].Tags);
+        var tags = result[0].Tags;
+        Assert.Equal(3, tags.Length);
+        Assert.Contains("env:prod", tags);
+        Assert.Contains("service:api", tags);
+        Assert.Contains("custom:tag", tags);
     }
 
     [Fact]
