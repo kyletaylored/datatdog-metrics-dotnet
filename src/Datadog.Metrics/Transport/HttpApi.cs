@@ -63,7 +63,23 @@ internal sealed class HttpApi : IDisposable
         // Submit distributions to v1 endpoint
         if (distributions.Count > 0)
         {
-            var distributionPayload = new DistributionPayload { Series = distributions.ToArray() };
+            // Convert SeriesMetric to DistributionSeriesMetric format
+            // Distribution points must be tuples: [[timestamp, [values]]]
+            var distributionSeries = distributions.Select(d => new DistributionSeriesMetric
+            {
+                Metric = d.Metric,
+                Host = d.Resources?.FirstOrDefault()?.Name,
+                // Convert MetricPoint objects to tuple format: [[timestamp, [values]]]
+                Points = d.Points.Select(p => new object[]
+                {
+                    p.Timestamp,
+                    new[] { p.Value }  // Wrap single value in array
+                }).ToArray(),
+                Tags = d.Tags,
+                Type = "distribution"
+            }).ToArray();
+
+            var distributionPayload = new DistributionPayload { Series = distributionSeries };
             success &= await SubmitWithRetryAsync(_v1DistributionUrl, distributionPayload, cancellationToken);
         }
 

@@ -31,12 +31,18 @@ Console.WriteLine();
 //   5. Command-line arguments
 var builder = Host.CreateApplicationBuilder(args);
 
-// Add DD_ prefixed environment variables for Datadog-specific config
-builder.Configuration.AddEnvironmentVariables(prefix: "DD_");
-
 // Validate API key is provided
-var apiKey = builder.Configuration["DatadogMetrics:ApiKey"]
-    ?? builder.Configuration["API_KEY"];  // From DD_API_KEY env var
+// Priority: 1. DatadogMetrics__ApiKey or DD_API_KEY from env, 2. appsettings.json
+// Note: Use string.IsNullOrWhiteSpace because appsettings.json may have empty strings
+var apiKey = builder.Configuration["DatadogMetrics:ApiKey"];
+if (string.IsNullOrWhiteSpace(apiKey))
+{
+    apiKey = builder.Configuration["DD_API_KEY"];  // Flat env var
+}
+if (string.IsNullOrWhiteSpace(apiKey))
+{
+    apiKey = builder.Configuration["DATADOG_API_KEY"];  // Alternative name
+}
 
 if (string.IsNullOrWhiteSpace(apiKey))
 {
@@ -67,6 +73,7 @@ builder.Services.AddDatadogMetricsWithDiagnostics(options =>
 
     // Display configuration
     Console.WriteLine("Datadog Metrics Configuration:");
+    Console.WriteLine($"   • Site: {options.Site}");
     Console.WriteLine($"   • Flush Interval: {options.FlushIntervalSeconds}s");
     Console.WriteLine($"   • Prefix: {options.Prefix ?? "(none)"}");
     Console.WriteLine($"   • Default Tags: {string.Join(", ", options.DefaultTags)}");

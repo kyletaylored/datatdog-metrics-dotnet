@@ -23,5 +23,5 @@ public class DistributionPayload
     /// Array of distribution series.
     /// </summary>
     [JsonPropertyName("series")]
-    public SeriesMetric[] Series { get; set; } = Array.Empty<SeriesMetric>();
+    public DistributionSeriesMetric[] Series { get; set; } = Array.Empty<DistributionSeriesMetric>();
 }

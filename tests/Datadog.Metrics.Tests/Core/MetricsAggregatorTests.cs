@@ -1,6 +1,7 @@
 using Datadog.Metrics.Configuration;
 using Datadog.Metrics.Core;
 using Datadog.Metrics.Metrics;
+using Datadog.Metrics.Transport.Models;
 
 namespace Datadog.Metrics.Tests.Core;
 
@@ -146,5 +147,51 @@ public class MetricsAggregatorTests
         Assert.Contains(result, m => m.Metric == "test.histogram.min" && m.Points[0].Value == 1.0);
         Assert.Contains(result, m => m.Metric == "test.histogram.max" && m.Points[0].Value == 5.0);
         Assert.Contains(result, m => m.Metric == "test.histogram.count" && m.Points[0].Value == 3);
+    }
+
+    [Fact]
+    public void AddPoint_Distribution_MarksAsDistribution()
+    {
+        // Arrange
+        var aggregator = new MetricsAggregator("testhost", null, Array.Empty<string>(), 1000);
+
+        // Act
+        aggregator.AddPoint(MetricType.Distribution, "test.distribution", 42.5, new[] { "env:test" }, DateTimeOffset.UtcNow);
+        var result = aggregator.Flush();
+
+        // Assert
+        Assert.Single(result);
+        Assert.Equal("test.distribution", result[0].Metric);
+        Assert.True(result[0].IsDistribution);
+
+        // Distribution points are DistributionPoint objects with Values array
+        var distPoint = Assert.IsType<DistributionPoint>(result[0].Points[0]);
+        Assert.Single(distPoint.Values);
+        Assert.Equal(42.5, distPoint.Values[0]);
+    }
+
+    [Fact]
+    public void AddPoint_Distribution_AccumulatesMultipleValues()
+    {
+        // Arrange
+        var aggregator = new MetricsAggregator("testhost", null, Array.Empty<string>(), 1000);
+        var timestamp = DateTimeOffset.UtcNow;
+
+        // Act - Add multiple distribution values at same timestamp (they'll be grouped)
+        aggregator.AddPoint(MetricType.Distribution, "request.size", 100, null, timestamp);
+        aggregator.AddPoint(MetricType.Distribution, "request.size", 250, null, timestamp);
+        aggregator.AddPoint(MetricType.Distribution, "request.size", 500, null, timestamp);
+        var result = aggregator.Flush();
+
+        // Assert - Distributions group values by timestamp into a single DistributionPoint
+        Assert.Single(result);
+        Assert.Single(result[0].Points); // One point containing all values
+        Assert.True(result[0].IsDistribution);
+
+        var distPoint = Assert.IsType<DistributionPoint>(result[0].Points[0]);
+        Assert.Equal(3, distPoint.Values.Length);
+        Assert.Contains(100, distPoint.Values);
+        Assert.Contains(250, distPoint.Values);
+        Assert.Contains(500, distPoint.Values);
     }
 }

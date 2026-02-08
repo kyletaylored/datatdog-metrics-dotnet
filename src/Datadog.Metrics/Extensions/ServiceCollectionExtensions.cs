@@ -3,6 +3,7 @@ using Datadog.Metrics.Core;
 using Datadog.Metrics.Integration;
 using Datadog.Metrics.Transport;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Datadog.Metrics.Extensions;
 
@@ -27,7 +28,7 @@ public static class ServiceCollectionExtensions
         // Register core services as singletons
         services.AddSingleton(sp =>
         {
-            var options = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<DatadogMetricsOptions>>();
+            var options = sp.GetRequiredService<IOptions<DatadogMetricsOptions>>();
             var config = options.Value;
 
             return new MetricsAggregator(
@@ -38,7 +39,12 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddSingleton<HttpApi>();
-        services.AddSingleton<DatadogMetricsLogger>();
+        services.AddSingleton<DatadogMetricsLogger>(sp =>
+        {
+            var aggregator = sp.GetRequiredService<MetricsAggregator>();
+            var options = sp.GetRequiredService<IOptions<DatadogMetricsOptions>>();
+            return new DatadogMetricsLogger(aggregator, options);
+        });
 
         // Register background services
         services.AddHostedService<DatadogReporter>();
