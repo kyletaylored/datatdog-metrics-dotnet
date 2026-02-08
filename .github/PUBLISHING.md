@@ -27,6 +27,7 @@ Before publishing, ensure:
 2. ✅ Tests are passing
 3. ✅ Release has been created with packages attached
 4. ✅ Tag follows format: `vX.Y.Z` (e.g., `v0.1.0`)
+5. ✅ `RELEASE_TOKEN` secret is configured (required for automatic publishing)
 
 ## How It Works
 
@@ -153,7 +154,12 @@ gh release create v0.1.0 ./packages/*.nupkg ./packages/checksums.txt
 ## Security Notes
 
 - 🔒 **NuGet API Key** is stored in GitHub Secrets as `NUGET_API_KEY`
-- 🔒 **GitHub Token** is automatically provided by GitHub Actions
+- 🔒 **Release Token** is stored in GitHub Secrets as `RELEASE_TOKEN` (Personal Access Token with `repo` scope)
+  - **Required** to trigger the publish workflow when a release is created by the build workflow
+  - GitHub Actions workflows triggered by `GITHUB_TOKEN` cannot trigger other workflows (security feature)
+  - Create at: https://github.com/settings/tokens (Classic Token with `repo` scope)
+  - Add to repository secrets: Settings → Secrets and variables → Actions → New repository secret
+  - Without this token, you'll need to manually trigger the publish workflow after each release
 - 🔒 Publish jobs require **environment approval** for production
 
 ## Package Availability
