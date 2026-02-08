@@ -9,7 +9,7 @@
 
     <!-- Package metadata -->
     <PackageId>kyletaylored.Datadog.Metrics</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Kyle Taylor</Authors>
     <Description>Buffered metrics reporting to Datadog HTTP API with System.Diagnostics.Metrics integration.</Description>
     <PackageTags>datadog;metrics;monitoring;observability;telemetry;community;unofficial</PackageTags>
