@@ -53,7 +53,7 @@ public class GaugeMetricTests
         // Assert
         Assert.Single(result);
         Assert.NotNull(result[0].Resources);
-        var resources = result[0].Resources;
+        var resources = result[0].Resources!;
         Assert.Single(resources);
         Assert.Equal("myhost", resources[0].Name);
         Assert.Equal("host", resources[0].Type);
